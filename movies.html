@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <title>Movies</title>
+    <style>
+        body {
+            font-size: 2vw;
+            font-family: 'Courier New', monospace;
+        }
+        table,
+        th,
+        td {
+            font-size: 2vw;
+            border: 3px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table align="center" border="2">
+        <style>
+            img {
+                border-radius: 5%;
+            }
+        </style>
+
+        <tr>
+            <th>No.</th>
+            <th>Movie</th>
+            <th>Rating</th>
+            <th>Images</th>
+        </tr>
+        <tr>
+            <td class="nr"></td>
+            <td>Great Gatsby</td>
+            <td>3.8</td>
+        </tr>
+        <tr>
+            <td class="nr"></td>
+            <td>Good Will Hunting</td>
+            <td>4.5</td>
+            <td><img src="https://i.imgur.com/42uVPJw.jpg" width="300px" />
+                <br> <br>
+                <img src="https://i.imgur.com/cnqULi5.jpg" width="300px" />
+            </td>
+        </tr>
+        <tr>
+            <td class="nr"></td>
+            <td>A Beautiful Mind</td>
+            <td>3.5</td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        var a = document.getElementsByClassName("nr");
+        for (var i = 0; i < a.length; i++) {
+            a[i].innerHTML = (i + 1) + ".";
+        }
+    </script>
+
+    <script src="https://static.app/js/static.js" type="text/javascript"></script>
+
+
+</body>
+
+</html>
