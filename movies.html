@@ -4,29 +4,44 @@
     <title>Movies</title>
     <style>
         body {
-            font-size: 8vw;
+            font-size: 20px;
             font-family: 'Courier New', monospace;
+            background-color: powderblue;
         }
 
-        table,
-        th,
-        td {
+        table {
+            font-size: 20px;
+            border: 3px solid black;
+            border-collapse: collapse;
+
+            img {
+                border-radius: 5%;
+                height: 200px;
+            }
+        }
+
+        th {
             font-size: 20px;
             border: 3px solid black;
             border-collapse: collapse;
         }
+
+        td {
+            font-size: 20px;
+            border: 3px solid black;
+            border-collapse: collapse;
+
+        }
+
+        /*td:nth-child(2) {
+            white-space: nowrap;
+        }*/
     </style>
 </head>
 
 <body>
 
-    <table align="center" border="2">
-        <style>
-            img {
-                border-radius: 5%;
-                height: 200px;
-            }
-        </style>
+    <table align="center">
 
         <tr>
             <th>No.</th>
@@ -53,12 +68,14 @@
             <td class="nr"></td>
             <td>Good Will Hunting</td>
             <td>movie</td>
-            <td>4.5</td>
+            <td>4.6</td>
             <td>
                 <ul>
                     <li>one of my all time favourites</li>
                     <li>watched it many times</li>
                     <li>splendid performance by Matt Damon and Robin Williams</li>
+                    <li>the scene in the park, where Robin gives a talk on life to Mark, is a really memorable and
+                        heart-touching scene</li>
                 </ul>
             </td>
             <td><img src="https://i.imgur.com/42uVPJw.jpg" /><img src="https://i.imgur.com/cnqULi5.jpg" /></td>
@@ -98,7 +115,24 @@
             <td>gradual story progression but it's engrossing</td>
             <td><img src="https://i.imgur.com/5AzndqT.jpeg" /></td>
         </tr>
+        <tr>
+            <td class="nr"></td>
+            <td>Tokyo Ghoul</td>
+            <td>anime</td>
+            <td>4.4</td>
+            <td>
+                <ul>
+                    <li>1st season is where it peaks</li>
+                    <li>2nd season could have done better, but it's still watchable</li>
+                    <li>mainstream</li>
+                </ul>
+            </td>
+            <td><img src="https://i.imgur.com/k2SmT5T.jpeg" /><img src="https://i.imgur.com/UWa6fd4.jpeg" /><img
+                    src="https://i.imgur.com/o2FzgRv.jpeg" /></td>
+        </tr>
     </table>
+
+
 
     <script type="text/javascript">
         var a = document.getElementsByClassName("nr");
