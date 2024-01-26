@@ -4,44 +4,49 @@
     <title>Movies</title>
     <style>
         body {
-            font-size: 2vw;
+            font-size: 20px;
             font-family: 'Courier New', monospace;
             background-color: powderblue;
         }
 
         table {
-            font-size: 2vw;
+            font-size: 20px;
             border: 3px solid black;
             border-collapse: collapse;
-
-            img {
-                border-radius: 5%;
-                height: 200px;
-            }
+            height: max-content;
+            width: max-content;
         }
 
         th {
-            font-size: 2vw;
+            font-size: 20px;
             border: 3px solid black;
             border-collapse: collapse;
         }
 
         td {
-            font-size: 2vw;
+            font-size: 20px;
             border: 3px solid black;
             border-collapse: collapse;
-
         }
 
-        /*td:nth-child(2) {
-            white-space: nowrap;
-        }*/
+        td:nth-child(5) {
+            white-space: normal;
+            width: 500;
+        }
+
+        img {
+            border-radius: 5%;
+            height: 200px;
+        }
     </style>
 </head>
 
 <body>
 
-    <table align="center">
+    <table>
+        <style>
+
+        </style>
 
         <tr>
             <th>No.</th>
