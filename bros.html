@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Item Index from JSON</title>
+</head>
+
+<body>
+    <h1>Find Index of a JSON Item</h1>
+
+    <!-- Input to search for the name -->
+    <label for="search-name">Enter Name:</label>
+    <input type="text" id="search-name" placeholder="Enter name" />
+    <button id="find-index-btn">Find Index</button>
+
+    <!-- Result display -->
+    <p><strong>Index:</strong> <span id="index-result"></span></p>
+
+    <script>
+        // Fetch JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Event listener for the button click
+                document.getElementById('find-index-btn').addEventListener('click', () => {
+                    const searchName = document.getElementById('search-name').value;
+                    let index = -1;  // Default if not found
+
+                    // Loop through the JSON array to find the index of the item
+                    data.forEach((item, i) => {
+                        if (item.name.toLowerCase() === searchName.toLowerCase()) {
+                            index = i;  // Assign the found index
+                        }
+                    });
+
+                    // Display the result in the HTML
+                    document.getElementById('index-result').textContent = index !== -1 ? index : "Not found";
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+
+</html>
