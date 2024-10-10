@@ -1,40 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Images from JSON</title>
+    <title>Movies</title>
+    <style>
+        body {
+            font: 20px 'Courier New', monospace;
+            background-color: powderblue;
+        }
+
+        table, th, td {
+            font-size: 20px;
+            border: 3px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        td:nth-child(5) {
+            white-space: normal;
+            width: 500px;
+        }
+
+        img {
+            border-radius: 5%;
+            height: 200px;
+            margin: 5px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1 id="title"></h1>
-<p id="type"></p>
-<p id="rating"></p>
-<div id="review"></div>
-<div id="images"></div>
+    <table id="moviesTable">
+        <tr>
+            <th>No.</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Images</th>
+        </tr>
+    </table>
 
-<script>
-// JSON Data
-const jsonData = {
-    "Title": "The Great Gatsby",
-    "Type": "Movie",
-    "Rating": 4,
-    "Review": "",
-    "Images": ["https://i.imgur.com/42uVPJw.jpg", "https://i.imgur.com/cnqULi5.jpg"]
-};
+    <script>
+        // Fetch the JSON data from the external file
+        fetch('movies.json')
+            .then(response => response.json())
+            .then(movies => {
+                // Get the table element
+                const table = document.getElementById("moviesTable");
 
-// Insert the JSON data into HTML
-document.getElementById('title').innerText = jsonData.Title;
-document.getElementById('type').innerText = "Type: " + jsonData.Type;
-document.getElementById('rating').innerText = "Rating: " + jsonData.Rating;
-document.getElementById('review').innerText = "Review: " + (jsonData.Review || "No review available");
-
-// Append image elements to the images div
-const imagesDiv = document.getElementById('images');
-jsonData.Images.forEach(imageUrl => {
-    imagesDiv.innerHTML += `<img src="${imageUrl}" style="width:100px; margin:10px;" />`;
-});
-</script>
+                // Loop through the movies data
+                movies.forEach((movie, index) => {
+                    const row = table.insertRow(); // Insert a new row
+                    row.innerHTML = `
+                        <td>${index + 1}.</td>
+                        <td>${movie.title}</td>
+                        <td>${movie.type}</td>
+                        <td>${movie.rating}</td>
+                        <td>${movie.review.map(review => `<li>${review}</li>`).join('')}</td>
+                        <td>${movie.images.map(img => `<img src="${img}" />`).join('')}</td>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching the movies data:', error);
+            });
+    </script>
 
 </body>
+
 </html>

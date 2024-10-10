@@ -1,30 +1,23 @@
 [
     {
-        "Title": "The Great Gatsby" ,
-        "Type": "Movie",
-        "Rating": 4,
-        "Review": ,
-        "Images": ["https://i.imgur.com/42uVPJw.jpg", "https://i.imgur.com/cnqULi5.jpg"],
+        "title": "The Great Gatsby",
+        "type": "Movie",
+        "rating": 3.8,
+        "review": ["watched it many times", "splendid performance by Leonardo Dicaprio"],
+        "images": ["https://i.imgur.com/UDYOdWU.jpeg"]
     },
     {
-        "Title": ,
-        "Type": ,
-        "Rating": ,
-        "Review": ,
-        "Images":
+        "title": "Good Will Hunting",
+        "type": "Movie",
+        "rating": 4.6,
+        "review": ["one of my all-time favourites", "watched it many times", "splendid performance by Matt Damon and Robin Williams", "the scene in the park is a heart-touching scene"],
+        "images": ["https://i.imgur.com/42uVPJw.jpg", "https://i.imgur.com/cnqULi5.jpg"]
     },
     {
-        "Title": ,
-        "Type": ,
-        "Rating": ,
-        "Review": ,
-        "Images":
-    },
-    {
-        "Title": ,
-        "Type": ,
-        "Rating": ,
-        "Review": ,
-        "Images":
-    },
+        "title": "A Beautiful Mind",
+        "type": "Movie",
+        "rating": 3.5,
+        "review": ["revolves around a schizophrenic genius", "based on the true story of John Nash"],
+        "images": ["https://i.imgur.com/yu7vB0x.jpeg"]
+    }
 ]
