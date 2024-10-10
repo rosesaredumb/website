@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Images from JSON</title>
+</head>
+<body>
+
+<h1 id="title"></h1>
+<p id="type"></p>
+<p id="rating"></p>
+<div id="review"></div>
+<div id="images"></div>
+
+<script>
+// JSON Data
+const jsonData = {
+    "Title": "The Great Gatsby",
+    "Type": "Movie",
+    "Rating": 4,
+    "Review": "",
+    "Images": ["https://i.imgur.com/42uVPJw.jpg", "https://i.imgur.com/cnqULi5.jpg"]
+};
+
+// Insert the JSON data into HTML
+document.getElementById('title').innerText = jsonData.Title;
+document.getElementById('type').innerText = "Type: " + jsonData.Type;
+document.getElementById('rating').innerText = "Rating: " + jsonData.Rating;
+document.getElementById('review').innerText = "Review: " + (jsonData.Review || "No review available");
+
+// Append image elements to the images div
+const imagesDiv = document.getElementById('images');
+jsonData.Images.forEach(imageUrl => {
+    imagesDiv.innerHTML += `<img src="${imageUrl}" style="width:100px; margin:10px;" />`;
+});
+</script>
+
+</body>
+</html>
