@@ -1,23 +1,132 @@
 [
     {
         "title": "The Great Gatsby",
-        "type": "Movie",
+        "type": "movie",
         "rating": 3.8,
         "review": ["watched it many times", "splendid performance by Leonardo Dicaprio"],
         "images": ["https://i.imgur.com/UDYOdWU.jpeg"]
     },
     {
         "title": "Good Will Hunting",
-        "type": "Movie",
+        "type": "movie",
         "rating": 4.6,
-        "review": ["one of my all-time favourites", "watched it many times", "splendid performance by Matt Damon and Robin Williams", "the scene in the park is a heart-touching scene"],
-        "images": ["https://i.imgur.com/42uVPJw.jpg", "https://i.imgur.com/cnqULi5.jpg"]
+        "review": [
+            "one of my all time favourites", 
+            "watched it many times", 
+            "splendid performance by Matt Damon and Robin Williams", 
+            "the scene in the park, where Robin gives a talk on life to Mark, is a really memorable and heart-touching scene"
+        ],
+        "images": [
+            "https://i.imgur.com/42uVPJw.jpg", 
+            "https://i.imgur.com/cnqULi5.jpg"
+        ]
     },
     {
         "title": "A Beautiful Mind",
-        "type": "Movie",
+        "type": "movie",
         "rating": 3.5,
-        "review": ["revolves around a schizophrenic genius", "based on the true story of John Nash"],
+        "review": [
+            "revolves around a schizophrenic genius", 
+            "based on a true story of a scientist named John Nash"
+        ],
         "images": ["https://i.imgur.com/yu7vB0x.jpeg"]
+    },
+    {
+        "title": "Zom 100",
+        "type": "anime",
+        "rating": 2.3,
+        "review": ["unique story", "plot focuses on zombie apocalypse", "high quality animation"],
+        "images": ["https://i.imgur.com/I83mxMG.jpeg"]
+    },
+    {
+        "title": "Darker than Black",
+        "type": "anime",
+        "rating": 2.8,
+        "review": ["gradual story progression but it's engrossing"],
+        "images": ["https://i.imgur.com/5AzndqT.jpeg"]
+    },
+    {
+        "title": "Tokyo Ghoul",
+        "type": "anime",
+        "rating": 4.4,
+        "review": [
+            "1st season is where it peaks", 
+            "2nd season could have done better, but it's still watchable", 
+            "mainstream"
+        ],
+        "images": [
+            "https://i.imgur.com/k2SmT5T.jpeg", 
+            "https://i.imgur.com/UWa6fd4.jpeg", 
+            "https://i.imgur.com/o2FzgRv.jpeg"
+        ]
+    },
+    {
+        "title": "Howl's moving castle",
+        "type": "anime",
+        "rating": 4,
+        "review": ["one of studio ghibli's best works"],
+        "images": [
+            "https://i.imgur.com/cQ8n3zT.jpeg", 
+            "https://i.imgur.com/3jnNLkJ.jpeg"
+        ]
+    },
+    {
+        "title": "Jomonte Suvisheshangal",
+        "type": "movie",
+        "rating": 3.5,
+        "review": ["nice movie"],
+        "images": []
+    },
+    {
+        "title": "Jacobinte Swargarajyam",
+        "type": "movie",
+        "rating": 3,
+        "review": ["similar to Jomonte Suvisheshangal"],
+        "images": []
+    },
+    {
+        "title": "King Liar",
+        "type": "movie",
+        "rating": 4,
+        "review": ["a variety concept"],
+        "images": []
+    },
+    {
+        "title": "Bro Daddy",
+        "type": "movie",
+        "rating": 2.8,
+        "review": ["funny"],
+        "images": []
+    },
+    {
+        "title": "Kurupo",
+        "type": "movie",
+        "rating": 4.6,
+        "review": ["all time favourite malayalam movie"],
+        "images": []
+    },
+    {
+        "title": "Interstellar",
+        "type": "movie",
+        "rating": 4.8,
+        "review": [
+            "one of the all time greatest sci-fi movies", 
+            "directed by, who some would call as, the cinematic 'God', Christopher Nolan", 
+            "watched it atleast 20 times", 
+            "great soundtrack", 
+            "main theme by Hans Zimmer"
+        ],
+        "images": [
+            "https://i.imgur.com/xRuIkiz.jpeg", 
+            "https://i.imgur.com/WUTpyF9.jpeg", 
+            "https://i.imgur.com/YP3OGBR.jpeg"
+        ]
+    },
+    {
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "type": "movie",
+        "rating": 3.9,
+        "review": [],
+        "images": []
     }
 ]
