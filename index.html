@@ -14,11 +14,19 @@
 
     <button onclick="encrypt()">Encrypt</button>
 
-    <label>Encrypted Output:</label>
-    <textarea id="encryptedOutput" readonly></textarea>
+    <label for="keyBox">Encryption Key:</label>
+    <input id="keyBox" type="text" readonly />
+
+    <label for="ivBox">IV:</label>
+    <input id="ivBox" type="text" readonly />
+
+    <label for="cipherBox">Ciphertext:</label>
+    <textarea id="cipherBox" readonly></textarea>
+
+    <hr style="margin: 20px 0; border: 1px solid #444;" />
 
     <label for="keyInput">Paste Key:</label>
-    <input id="keyInput" type="text" placeholder="Paste key shown after encryption" />
+    <input id="keyInput" type="text" placeholder="Paste key shown above" />
 
     <label for="ivInput">Paste IV:</label>
     <input id="ivInput" type="text" placeholder="Paste IV" />
