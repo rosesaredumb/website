@@ -56,14 +56,13 @@ async function encrypt() {
         const keyBase64 = await exportKey(key);
         const ivBase64 = bufToBase64(iv);
         const cipherBase64 = bufToBase64(encrypted);
+        const combined = keyBase64 + ":" + ivBase64;
 
-        document.getElementById("keyBox").value = keyBase64;
-        document.getElementById("ivBox").value = ivBase64;
+        document.getElementById("keyIvBox").value = combined;
         document.getElementById("cipherBox").value = cipherBase64;
 
-        // Autofill decryption section too
-        document.getElementById("keyInput").value = keyBase64;
-        document.getElementById("ivInput").value = ivBase64;
+        // Autofill decryption section
+        document.getElementById("combinedInput").value = combined;
         document.getElementById("cipherInput").value = cipherBase64;
 
     } catch (error) {
@@ -72,14 +71,18 @@ async function encrypt() {
 }
 
 async function decrypt() {
-    const keyBase64 = document.getElementById("keyInput").value.trim();
-    const ivBase64 = document.getElementById("ivInput").value.trim();
+    const combined = document.getElementById("combinedInput").value.trim();
     const cipherBase64 = document.getElementById("cipherInput").value.trim();
 
-    if (!keyBase64 || !ivBase64 || !cipherBase64)
-        return alert("⚠ Please fill in all key, IV, and ciphertext fields.");
+    if (!combined || !cipherBase64)
+        return alert("⚠ Please fill in both the combined key+IV and ciphertext.");
 
     try {
+        const [keyBase64, ivBase64] = combined.split(":");
+
+        if (!keyBase64 || !ivBase64)
+            throw new Error("Invalid combined format. Use key:iv.");
+
         const key = await importKey(keyBase64);
         const iv = base64ToBuf(ivBase64);
         const ciphertext = base64ToBuf(cipherBase64);
