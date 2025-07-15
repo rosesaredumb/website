@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>AES-GCM Encrypt/Decrypt</title>
+  <meta charset="UTF-8" />
+  <title>AES-GCM Encrypt/Decrypt</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <h2>AES-GCM Encrypt/Decrypt Demo</h2>
+  <div class="container">
+    <h2>AES-GCM Encrypt/Decrypt</h2>
 
-    <label>Plaintext:</label><br>
-    <textarea id="plaintext" rows="4" cols="50" placeholder="Enter text here..."></textarea><br><br>
+    <label for="plaintext">Plaintext:</label>
+    <textarea id="plaintext" placeholder="Enter text here..."></textarea>
 
     <button onclick="encrypt()">Encrypt</button>
 
-    <h3>Encrypted Output:</h3>
-    <pre id="encryptedOutput"></pre>
+    <label>Encrypted Output:</label>
+    <textarea id="encryptedOutput" readonly></textarea>
 
-    <label>Paste Key:</label><br>
-    <input id="keyInput" type="text" size="50" placeholder="Paste key shown after encryption"><br><br>
+    <label for="keyInput">Paste Key:</label>
+    <input id="keyInput" type="text" placeholder="Paste key shown after encryption" />
 
-    <label>Paste IV:</label><br>
-    <input id="ivInput" type="text" size="50" placeholder="Paste IV shown below"><br><br>
+    <label for="ivInput">Paste IV:</label>
+    <input id="ivInput" type="text" placeholder="Paste IV" />
 
-    <label>Paste Ciphertext:</label><br>
-    <textarea id="cipherInput" rows="4" cols="50" placeholder="Paste ciphertext"></textarea><br><br>
+    <label for="cipherInput">Paste Ciphertext:</label>
+    <textarea id="cipherInput" placeholder="Paste ciphertext"></textarea>
 
     <button onclick="decrypt()">Decrypt</button>
 
-    <h3>Decrypted Output:</h3>
-    <pre id="decryptedOutput"></pre>
+    <label>Decrypted Output:</label>
+    <textarea id="decryptedOutput" readonly></textarea>
+  </div>
 
-    <script src="encrypt.js"></script>
+  <script src="encrypt.js"></script>
 </body>
 </html>
