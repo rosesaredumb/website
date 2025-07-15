@@ -2,21 +2,32 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>AES-GCM Encryption</title>
+    <title>AES-GCM Encrypt/Decrypt</title>
 </head>
 <body>
-    <h2>AES-GCM Text Encryptor</h2>
+    <h2>AES-GCM Encrypt/Decrypt Demo</h2>
 
     <label>Plaintext:</label><br>
     <textarea id="plaintext" rows="4" cols="50" placeholder="Enter text here..."></textarea><br><br>
 
-    <label>Key (password):</label><br>
-    <input type="text" id="key" placeholder="Enter password"><br><br>
-
-    <button onclick="encryptText()">Encrypt</button>
+    <button onclick="encrypt()">Encrypt</button>
 
     <h3>Encrypted Output:</h3>
-    <pre id="output"></pre>
+    <pre id="encryptedOutput"></pre>
+
+    <label>Paste Key:</label><br>
+    <input id="keyInput" type="text" size="50" placeholder="Paste key shown after encryption"><br><br>
+
+    <label>Paste IV:</label><br>
+    <input id="ivInput" type="text" size="50" placeholder="Paste IV shown below"><br><br>
+
+    <label>Paste Ciphertext:</label><br>
+    <textarea id="cipherInput" rows="4" cols="50" placeholder="Paste ciphertext"></textarea><br><br>
+
+    <button onclick="decrypt()">Decrypt</button>
+
+    <h3>Decrypted Output:</h3>
+    <pre id="decryptedOutput"></pre>
 
     <script src="encrypt.js"></script>
 </body>
