@@ -1,3 +1,5 @@
+console.log("🔧 encrypt.js loaded");
+
 function strToBuf(str) {
     return new TextEncoder().encode(str);
 }
