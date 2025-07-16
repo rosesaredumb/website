@@ -1,249 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>AES-GCM Encrypt/Decrypt</title>
+  <meta charset="UTF-8" />
+  <title>AES-GCM Encrypt/Decrypt</title>
 
-    <!-- 🔹 Embedded CSS for dark GUI styling -->
-    <style>
-        /* Page layout and background */
-        body {
-            background-color: #1e1e1e;
-            color: #ffffff;
-            font-family: "Segoe UI", sans-serif;
-            display: flex;
-            justify-content: center;
-            padding-top: 30px;
-        }
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      padding-top: 30px;
+    }
 
-        /* Container box for the app */
-        .container {
-            background-color: #2c2c2c;
-            padding: 20px 30px;
-            border-radius: 8px;
-            width: 500px;
-            box-shadow: 0 0 10px #000;
-        }
+    .container {
+      background-color: #2c2c2c;
+      padding: 20px 30px;
+      border-radius: 8px;
+      width: 500px;
+      box-shadow: 0 0 10px #000;
+    }
 
-        h2 {
-            text-align: center;
-            color: #00ffff;
-        }
+    h2 {
+      text-align: center;
+      color: #00ffff;
+    }
 
-        /* Labels above input fields */
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
 
-        /* Input and textarea fields */
-        input, textarea {
-            width: 100%;
-            background-color: #1a1a1a;
-            border: 1px solid #444;
-            color: #eee;
-            padding: 8px;
-            margin-top: 4px;
-            border-radius: 4px;
-            font-size: 14px;
-            resize: vertical;
-        }
+    input, textarea {
+      width: 100%;
+      background-color: #1a1a1a;
+      border: 1px solid #444;
+      color: #eee;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 4px;
+      font-size: 14px;
+      resize: vertical;
+    }
 
-        /* Minimum height for multi-line text */
-        textarea {
-            min-height: 60px;
-        }
+    textarea {
+      min-height: 60px;
+    }
 
-        /* Buttons styling */
-        button {
-            width: 100%;
-            margin-top: 10px;
-            background-color: #007acc;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    button {
+      width: 100%;
+      margin-top: 10px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #005f99;
-        }
-    </style>
+    button:hover {
+      background-color: #005f99;
+    }
+
+    /* 🔔 Toast message styling */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>AES-GCM Encrypt/Decrypt</h2>
+  <div class="container">
+    <h2>AES-GCM Encrypt/Decrypt</h2>
 
-        <!-- 🔹 Input: Plaintext to encrypt -->
-        <label for="plaintext">Plaintext:</label>
-        <textarea id="plaintext" placeholder="Enter text here..."></textarea>
+    <label for="plaintext">Plaintext:</label>
+    <textarea id="plaintext" placeholder="Enter text here..."></textarea>
+    <button onclick="encrypt()">Encrypt</button>
 
-        <!-- 🔹 Button to trigger encryption -->
-        <button onclick="encrypt()">Encrypt</button>
+    <label for="keyIvBox">Combined Key + IV:</label>
+    <input id="keyIvBox" type="text" readonly />
+    <button onclick="copyToClipboard('keyIvBox')">📋 Copy Key + IV</button>
 
-        <!-- 🔹 Output: Combined Key + IV (Base64) -->
-        <label for="keyIvBox">Combined Key + IV:</label>
-        <input id="keyIvBox" type="text" readonly />
-        <button onclick="copyToClipboard('keyIvBox')">📋 Copy Key + IV</button>
+    <label for="cipherBox">Ciphertext:</label>
+    <textarea id="cipherBox" readonly></textarea>
 
-        <!-- 🔹 Output: Ciphertext (Base64) -->
-        <label for="cipherBox">Ciphertext:</label>
-        <textarea id="cipherBox" readonly></textarea>
+    <hr style="margin: 20px 0; border: 1px solid #444;" />
 
-        <!-- Divider line -->
-        <hr style="margin: 20px 0; border: 1px solid #444;" />
+    <label for="combinedInput">Paste Combined Key + IV:</label>
+    <input id="combinedInput" type="text" placeholder="Paste key:iv" />
 
-        <!-- 🔹 Input for Decryption: Combined Key + IV -->
-        <label for="combinedInput">Paste Combined Key + IV:</label>
-        <input id="combinedInput" type="text" placeholder="Paste key:iv" />
+    <label for="cipherInput">Paste Ciphertext:</label>
+    <textarea id="cipherInput" placeholder="Paste ciphertext"></textarea>
+    <button onclick="decrypt()">Decrypt</button>
 
-        <!-- 🔹 Input for Decryption: Ciphertext -->
-        <label for="cipherInput">Paste Ciphertext:</label>
-        <textarea id="cipherInput" placeholder="Paste ciphertext"></textarea>
+    <label>Decrypted Output:</label>
+    <textarea id="decryptedOutput" readonly></textarea>
+    <button onclick="copyToClipboard('decryptedOutput')">📋 Copy Output</button>
+  </div>
 
-        <!-- 🔹 Button to trigger decryption -->
-        <button onclick="decrypt()">Decrypt</button>
+  <!-- 🔔 Toast notification container -->
+  <div id="toast" class="toast"></div>
 
-        <!-- 🔹 Output: Decrypted plain text -->
-        <label>Decrypted Output:</label>
-        <textarea id="decryptedOutput" readonly></textarea>
-        <button onclick="copyToClipboard('decryptedOutput')">📋 Copy Output</button>
-    </div>
+  <script>
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "toast show";
 
-    <!-- 🔹 Embedded JavaScript for AES-GCM logic -->
-    <script>
-        console.log("🔧 AES-GCM script loaded");
+      setTimeout(() => {
+        toast.className = "toast";
+      }, duration);
+    }
 
-        // 🔹 Convert string to Uint8Array (binary)
-        function strToBuf(str) {
-            return new TextEncoder().encode(str);
-        }
+    function strToBuf(str) {
+      return new TextEncoder().encode(str);
+    }
 
-        // 🔹 Convert Uint8Array to string
-        function bufToStr(buf) {
-            return new TextDecoder().decode(buf);
-        }
+    function bufToStr(buf) {
+      return new TextDecoder().decode(buf);
+    }
 
-        // 🔹 Convert binary data to Base64 string
-        function bufToBase64(buffer) {
-            return btoa(String.fromCharCode(...new Uint8Array(buffer)));
-        }
+    function bufToBase64(buffer) {
+      return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    }
 
-        // 🔹 Convert Base64 string to binary data
-        function base64ToBuf(base64) {
-            return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-        }
+    function base64ToBuf(base64) {
+      return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    }
 
-        // 🔹 Generate a new 256-bit AES-GCM key
-        async function generateKey() {
-            return await window.crypto.subtle.generateKey(
-                { name: "AES-GCM", length: 256 },
-                true,
-                ["encrypt", "decrypt"]
-            );
-        }
+    async function generateKey() {
+      return await window.crypto.subtle.generateKey(
+        { name: "AES-GCM", length: 256 },
+        true,
+        ["encrypt", "decrypt"]
+      );
+    }
 
-        // 🔹 Export key to Base64 string
-        async function exportKey(key) {
-            const raw = await window.crypto.subtle.exportKey("raw", key);
-            return bufToBase64(raw);
-        }
+    async function exportKey(key) {
+      const raw = await window.crypto.subtle.exportKey("raw", key);
+      return bufToBase64(raw);
+    }
 
-        // 🔹 Import Base64 string back into a CryptoKey
-        async function importKey(base64Key) {
-            const raw = base64ToBuf(base64Key);
-            return await window.crypto.subtle.importKey(
-                "raw",
-                raw,
-                "AES-GCM",
-                true,
-                ["encrypt", "decrypt"]
-            );
-        }
+    async function importKey(base64Key) {
+      const raw = base64ToBuf(base64Key);
+      return await window.crypto.subtle.importKey(
+        "raw",
+        raw,
+        "AES-GCM",
+        true,
+        ["encrypt", "decrypt"]
+      );
+    }
 
-        // 🔹 Encrypt the user-provided plaintext
-        async function encrypt() {
-            const plaintext = document.getElementById("plaintext").value.trim();
-            if (!plaintext) return alert("⚠ Please enter some text to encrypt.");
+    async function encrypt() {
+      const plaintext = document.getElementById("plaintext").value.trim();
+      if (!plaintext) return showToast("⚠ Enter text to encrypt");
 
-            try {
-                const iv = window.crypto.getRandomValues(new Uint8Array(12)); // AES-GCM requires 96-bit IV
-                const key = await generateKey();
-                const encrypted = await window.crypto.subtle.encrypt(
-                    { name: "AES-GCM", iv },
-                    key,
-                    strToBuf(plaintext)
-                );
+      try {
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const key = await generateKey();
+        const encrypted = await window.crypto.subtle.encrypt(
+          { name: "AES-GCM", iv },
+          key,
+          strToBuf(plaintext)
+        );
 
-                const keyBase64 = await exportKey(key);
-                const ivBase64 = bufToBase64(iv);
-                const cipherBase64 = bufToBase64(encrypted);
-                const combined = keyBase64 + ":" + ivBase64;
+        const keyBase64 = await exportKey(key);
+        const ivBase64 = bufToBase64(iv);
+        const cipherBase64 = bufToBase64(encrypted);
+        const combined = keyBase64 + ":" + ivBase64;
 
-                // 🔹 Output the combined key:iv and ciphertext
-                document.getElementById("keyIvBox").value = combined;
-                document.getElementById("cipherBox").value = cipherBase64;
+        document.getElementById("keyIvBox").value = combined;
+        document.getElementById("cipherBox").value = cipherBase64;
+        document.getElementById("combinedInput").value = combined;
+        document.getElementById("cipherInput").value = cipherBase64;
 
-                // 🔹 Autofill decrypt inputs
-                document.getElementById("combinedInput").value = combined;
-                document.getElementById("cipherInput").value = cipherBase64;
-            } catch (error) {
-                alert("❌ Encryption error: " + error.message);
-            }
-        }
+        showToast("✅ Encrypted successfully");
+      } catch (error) {
+        showToast("❌ Encryption error: " + error.message);
+      }
+    }
 
-        // 🔹 Decrypt the user-pasted key+iv and ciphertext
-        async function decrypt() {
-            const combined = document.getElementById("combinedInput").value.trim();
-            const cipherBase64 = document.getElementById("cipherInput").value.trim();
+    async function decrypt() {
+      const combined = document.getElementById("combinedInput").value.trim();
+      const cipherBase64 = document.getElementById("cipherInput").value.trim();
 
-            if (!combined || !cipherBase64)
-                return alert("⚠ Please fill in both the combined key+IV and ciphertext.");
+      if (!combined || !cipherBase64)
+        return showToast("⚠ Please provide key + ciphertext");
 
-            try {
-                const [keyBase64, ivBase64] = combined.split(":");
-                if (!keyBase64 || !ivBase64)
-                    throw new Error("Invalid format. Use key:iv");
+      try {
+        const [keyBase64, ivBase64] = combined.split(":");
+        if (!keyBase64 || !ivBase64)
+          throw new Error("Invalid format (key:iv)");
 
-                const key = await importKey(keyBase64);
-                const iv = base64ToBuf(ivBase64);
-                const ciphertext = base64ToBuf(cipherBase64);
+        const key = await importKey(keyBase64);
+        const iv = base64ToBuf(ivBase64);
+        const ciphertext = base64ToBuf(cipherBase64);
 
-                const decrypted = await window.crypto.subtle.decrypt(
-                    { name: "AES-GCM", iv },
-                    key,
-                    ciphertext
-                );
+        const decrypted = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv },
+          key,
+          ciphertext
+        );
 
-                // 🔹 Output the decrypted text
-                document.getElementById("decryptedOutput").value = bufToStr(decrypted);
-            } catch (err) {
-                document.getElementById("decryptedOutput").value =
-                    "❌ Decryption failed: " + err.message;
-            }
-        }
+        document.getElementById("decryptedOutput").value = bufToStr(decrypted);
+        showToast("✅ Decrypted successfully");
+      } catch (err) {
+        document.getElementById("decryptedOutput").value = "";
+        showToast("❌ Decryption failed: " + err.message);
+      }
+    }
 
-        // 🔹 Copy any field content to clipboard
-        function copyToClipboard(elementId) {
-            const el = document.getElementById(elementId);
-            if (!el) return alert("⚠ Field not found!");
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return showToast("⚠ Field not found");
 
-            el.select?.();
-            el.setSelectionRange?.(0, 99999); // For mobile
+      el.select?.();
+      el.setSelectionRange?.(0, 99999);
 
-            try {
-                navigator.clipboard.writeText(el.value || el.innerText).then(() => {
-                    alert("✅ Copied to clipboard!");
-                }).catch(err => {
-                    alert("❌ Clipboard copy failed: " + err.message);
-                });
-            } catch (err) {
-                alert("❌ Copy not supported in this browser.");
-            }
-        }
-    </script>
+      try {
+        navigator.clipboard.writeText(el.value || el.innerText).then(() => {
+          showToast("✅ Copied to clipboard");
+        }).catch(err => {
+          showToast("❌ Clipboard error: " + err.message);
+        });
+      } catch (err) {
+        showToast("❌ Clipboard not supported");
+      }
+    }
+  </script>
 </body>
 </html>
