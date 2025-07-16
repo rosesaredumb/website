@@ -61,7 +61,7 @@ async function encrypt() {
         document.getElementById("keyIvBox").value = combined;
         document.getElementById("cipherBox").value = cipherBase64;
 
-        // Autofill decryption section
+        // Autofill for decryption
         document.getElementById("combinedInput").value = combined;
         document.getElementById("cipherInput").value = cipherBase64;
 
@@ -81,7 +81,7 @@ async function decrypt() {
         const [keyBase64, ivBase64] = combined.split(":");
 
         if (!keyBase64 || !ivBase64)
-            throw new Error("Invalid combined format. Use key:iv.");
+            throw new Error("Invalid combined format. Use key:iv");
 
         const key = await importKey(keyBase64);
         const iv = base64ToBuf(ivBase64);
