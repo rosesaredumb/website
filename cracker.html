@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>AES-GCM Encrypt/Decrypt</title>
@@ -33,7 +34,8 @@
       font-weight: bold;
     }
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       background-color: #1a1a1a;
       border: 1px solid #444;
@@ -95,11 +97,12 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h2>AES-GCM Encrypt/Decrypt</h2>
 
-    <label for="plaintext">Plaintext:</label>
+    <label for="plaintext">Plasintext:</label>
     <textarea id="plaintext" placeholder="Enter text here..."></textarea>
     <button onclick="encrypt()">Encrypt</button>
 
@@ -143,7 +146,7 @@
   <script>
     /*! qrcode.js - MIT licensed - David Shim https://github.com/davidshimjs/qrcodejs */
     // (Minified QR library)
-    !function(o){function t(o){this.mode=1,this.data=o}function r(o,t){this.typeNumber=o,this.errorCorrectLevel=t,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function e(){this.buffer=[],this.length=0}function n(o){for(var t=0;t<o.length&&0==o[t];)t++;for(var r=new Array(o.length-t+o.length),e=0;e<o.length-t;e++)r[e]=o[e+t];return r}o.QRCode=function(o){this._el=o,this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRErrorCorrectLevel.H}},QRCode.prototype.makeCode=function(o){var t=new r(this._htOption.typeNumber,this._htOption.correctLevel);t.addData(o),t.make(),this._oDrawing||(this._oDrawing=new QRCodeDrawing(this._el,this._htOption)),this._oDrawing.draw(t)},o.QRCode=t}(window);
+    !function (o) { function t(o) { this.mode = 1, this.data = o } function r(o, t) { this.typeNumber = o, this.errorCorrectLevel = t, this.modules = null, this.moduleCount = 0, this.dataCache = null, this.dataList = [] } function e() { this.buffer = [], this.length = 0 } function n(o) { for (var t = 0; t < o.length && 0 == o[t];)t++; for (var r = new Array(o.length - t + o.length), e = 0; e < o.length - t; e++)r[e] = o[e + t]; return r } o.QRCode = function (o) { this._el = o, this._htOption = { width: 256, height: 256, typeNumber: 4, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRErrorCorrectLevel.H } }, QRCode.prototype.makeCode = function (o) { var t = new r(this._htOption.typeNumber, this._htOption.correctLevel); t.addData(o), t.make(), this._oDrawing || (this._oDrawing = new QRCodeDrawing(this._el, this._htOption)), this._oDrawing.draw(t) }, o.QRCode = t }(window);
   </script>
 
   <script>
@@ -288,4 +291,5 @@
     }
   </script>
 </body>
+
 </html>
