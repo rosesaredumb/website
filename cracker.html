@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>AES-GCM Encrypt/Decrypt</title>
-
   <style>
     body {
       background-color: #1e1e1e;
@@ -87,7 +86,8 @@
       transform: translateY(0);
     }
 
-    #qrContainer {
+    #qrContainer,
+    #totpQR {
       margin-top: 20px;
       display: flex;
       justify-content: center;
@@ -95,24 +95,26 @@
       flex-direction: column;
     }
 
-    #qrcode {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-    }
-
-    #qrcode canvas {
+    #qrcode canvas,
+    #totpQR canvas {
       margin-top: 10px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <!-- 🔐 TOTP Login -->
+  <div id="authContainer" class="container">
+    <h2>🔐 TOTP Authentication</h2>
+    <label for="totpCode">Enter 6-digit code from your Authenticator:</label>
+    <input id="totpCode" type="text" maxlength="6" />
+    <button onclick="verifyTOTP()">Verify</button>
+    <button onclick="showTOTPQR()">📷 Show TOTP QR</button>
+    <div id="totpQR"></div>
+  </div>
+
+  <!-- 🔒 Main App (hidden until TOTP verified) -->
+  <div id="mainApp" class="container" style="display: none;">
     <h2>AES-GCM Encrypt/Decrypt</h2>
 
     <label for="plaintext">Plain text:</label>
@@ -125,13 +127,12 @@
 
     <label for="cipherBox">Cipher text:</label>
     <textarea id="cipherBox" readonly></textarea>
-    <button onclick="copyToClipboard('cipherBox')">📋 Copy Ciphertext</button>
+    <button onclick="copyToClipboard('cipherBox')">📋 Copy Cipher text</button>
 
-    <!-- 🔹 QR Code options -->
     <label>QR Code for:</label>
     <select id="qrType">
       <option value="keyIvBox">Combined Key + IV</option>
-      <option value="cipherBox">Ciphertext</option>
+      <option value="cipherBox">Cipher text</option>
     </select>
     <button onclick="generateQRCode()">🔳 Generate QR Code</button>
 
@@ -155,10 +156,13 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- ✅ QR Code Library (CDN version) -->
+  <!-- ✅ Dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jiangts/JS-OTP@master/lib/jsotp.min.js"></script>
 
+  <!-- 🔧 Core Logic -->
   <script>
+    // Show toast messages
     function showToast(message, duration = 3000) {
       const toast = document.getElementById("toast");
       toast.textContent = message;
@@ -166,6 +170,20 @@
       setTimeout(() => toast.className = "toast", duration);
     }
 
+    // Clipboard copy
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return showToast("⚠ Field not found");
+      el.select?.();
+      el.setSelectionRange?.(0, 99999);
+      navigator.clipboard.writeText(el.value || el.innerText).then(() => {
+        showToast("✅ Copied to clipboard");
+      }).catch(err => {
+        showToast("❌ Clipboard error: " + err.message);
+      });
+    }
+
+    // Buffer conversion
     function strToBuf(str) {
       return new TextEncoder().encode(str);
     }
@@ -182,43 +200,30 @@
       return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
     }
 
+    // AES Key generation
     async function generateKey() {
-      return await window.crypto.subtle.generateKey(
-        { name: "AES-GCM", length: 256 },
-        true,
-        ["encrypt", "decrypt"]
-      );
+      return await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt", "decrypt"]);
     }
 
     async function exportKey(key) {
-      const raw = await window.crypto.subtle.exportKey("raw", key);
+      const raw = await crypto.subtle.exportKey("raw", key);
       return bufToBase64(raw);
     }
 
     async function importKey(base64Key) {
       const raw = base64ToBuf(base64Key);
-      return await window.crypto.subtle.importKey(
-        "raw",
-        raw,
-        "AES-GCM",
-        true,
-        ["encrypt", "decrypt"]
-      );
+      return await crypto.subtle.importKey("raw", raw, "AES-GCM", true, ["encrypt", "decrypt"]);
     }
 
+    // Encryption
     async function encrypt() {
       const plaintext = document.getElementById("plaintext").value.trim();
       if (!plaintext) return showToast("⚠ Enter text to encrypt");
 
       try {
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const iv = crypto.getRandomValues(new Uint8Array(12));
         const key = await generateKey();
-        const encrypted = await window.crypto.subtle.encrypt(
-          { name: "AES-GCM", iv },
-          key,
-          strToBuf(plaintext)
-        );
-
+        const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, strToBuf(plaintext));
         const keyBase64 = await exportKey(key);
         const ivBase64 = bufToBase64(iv);
         const cipherBase64 = bufToBase64(encrypted);
@@ -235,28 +240,23 @@
       }
     }
 
+    // Decryption
     async function decrypt() {
       const combined = document.getElementById("combinedInput").value.trim();
       const cipherBase64 = document.getElementById("cipherInput").value.trim();
-
-      if (!combined || !cipherBase64)
-        return showToast("⚠ Please provide key + ciphertext");
+      if (!combined || !cipherBase64) return showToast("⚠ Provide key + ciphertext");
 
       try {
         const [keyBase64, ivBase64] = combined.split(":");
-        if (!keyBase64 || !ivBase64)
-          throw new Error("Invalid format (key:iv)");
-
+        if (!keyBase64 || !ivBase64) {
+          showToast("❌ Invalid key:iv format");
+          return;
+        }
         const key = await importKey(keyBase64);
         const iv = base64ToBuf(ivBase64);
         const ciphertext = base64ToBuf(cipherBase64);
 
-        const decrypted = await window.crypto.subtle.decrypt(
-          { name: "AES-GCM", iv },
-          key,
-          ciphertext
-        );
-
+        const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
         document.getElementById("decryptedOutput").value = bufToStr(decrypted);
         showToast("✅ Decrypted successfully");
       } catch (err) {
@@ -265,38 +265,40 @@
       }
     }
 
-    function copyToClipboard(elementId) {
-      const el = document.getElementById(elementId);
-      if (!el) return showToast("⚠ Field not found");
-
-      el.select?.();
-      el.setSelectionRange?.(0, 99999);
-
-      try {
-        navigator.clipboard.writeText(el.value || el.innerText).then(() => {
-          showToast("✅ Copied to clipboard");
-        }).catch(err => {
-          showToast("❌ Clipboard error: " + err.message);
-        });
-      } catch (err) {
-        showToast("❌ Clipboard not supported");
-      }
-    }
-
+    // QR Code generator
     function generateQRCode() {
       const type = document.getElementById("qrType").value;
       const text = document.getElementById(type)?.value?.trim();
       const container = document.getElementById("qrcode");
-
-      container.innerHTML = ""; // Clear previous QR
-
-      if (!text) {
-        showToast("⚠ Nothing to generate QR from");
-        return;
-      }
-
+      container.innerHTML = "";
+      if (!text) return showToast("⚠ Nothing to generate QR from");
       new QRCode(container).makeCode(text);
       showToast("✅ QR Code generated");
+    }
+
+    // TOTP verification
+    const secret = "JBSWY3DPEHPK3PXP";
+    const totp = new jsOTP.totp();
+
+    function verifyTOTP() {
+      const input = document.getElementById("totpCode").value.trim();
+      const currentCode = totp.getOtp(secret);
+      if (input === currentCode) {
+        document.getElementById("authContainer").style.display = "none";
+        document.getElementById("mainApp").style.display = "block";
+        showToast("✅ TOTP Verified");
+      } else {
+        showToast("❌ Invalid Code");
+      }
+    }
+
+    // Show QR code for TOTP setup
+    function showTOTPQR() {
+      const uri = "otpauth://totp/MyEncryptorApp:user@example.com?secret=" + secret + "&issuer=MyEncryptorApp";
+      const container = document.getElementById("totpQR");
+      container.innerHTML = "";
+      new QRCode(container, { text: uri, width: 200, height: 200 });
+      showToast("✅ Scan this QR with Google Authenticator");
     }
   </script>
 </body>
