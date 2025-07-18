@@ -102,7 +102,7 @@
   <div class="container">
     <h2>AES-GCM Encrypt/Decrypt</h2>
 
-    <label for="plaintext">Plasintext:</label>
+    <label for="plaintext">Plain text:</label>
     <textarea id="plaintext" placeholder="Enter text here..."></textarea>
     <button onclick="encrypt()">Encrypt</button>
 
@@ -110,7 +110,7 @@
     <input id="keyIvBox" type="text" readonly />
     <button onclick="copyToClipboard('keyIvBox')">📋 Copy Key + IV</button>
 
-    <label for="cipherBox">Ciphertext:</label>
+    <label for="cipherBox">Cipher text:</label>
     <textarea id="cipherBox" readonly></textarea>
     <button onclick="copyToClipboard('cipherBox')">📋 Copy Ciphertext</button>
 
@@ -131,7 +131,7 @@
     <label for="combinedInput">Paste Combined Key + IV:</label>
     <input id="combinedInput" type="text" placeholder="Paste key:iv" />
 
-    <label for="cipherInput">Paste Ciphertext:</label>
+    <label for="cipherInput">Paste Cipher text:</label>
     <textarea id="cipherInput" placeholder="Paste ciphertext"></textarea>
     <button onclick="decrypt()">Decrypt</button>
 
