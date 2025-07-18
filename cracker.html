@@ -142,12 +142,8 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- ✅ QR Code Library (Offline - No need for internet) -->
-  <script>
-    /*! qrcode.js - MIT licensed - David Shim https://github.com/davidshimjs/qrcodejs */
-    // (Minified QR library)
-    !function (o) { function t(o) { this.mode = 1, this.data = o } function r(o, t) { this.typeNumber = o, this.errorCorrectLevel = t, this.modules = null, this.moduleCount = 0, this.dataCache = null, this.dataList = [] } function e() { this.buffer = [], this.length = 0 } function n(o) { for (var t = 0; t < o.length && 0 == o[t];)t++; for (var r = new Array(o.length - t + o.length), e = 0; e < o.length - t; e++)r[e] = o[e + t]; return r } o.QRCode = function (o) { this._el = o, this._htOption = { width: 256, height: 256, typeNumber: 4, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRErrorCorrectLevel.H } }, QRCode.prototype.makeCode = function (o) { var t = new r(this._htOption.typeNumber, this._htOption.correctLevel); t.addData(o), t.make(), this._oDrawing || (this._oDrawing = new QRCodeDrawing(this._el, this._htOption)), this._oDrawing.draw(t) }, o.QRCode = t }(window);
-  </script>
+  <!-- ✅ QR Code Library (CDN version) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <script>
     function showToast(message, duration = 3000) {
